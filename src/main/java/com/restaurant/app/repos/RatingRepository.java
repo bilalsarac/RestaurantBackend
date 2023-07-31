@@ -17,6 +17,13 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     List<Rating> findByRestaurantId(Long restaurantId);
 
+    @Query(value = "SELECT AVG(price_score) FROM score WHERE restaurant_id = ?1", nativeQuery = true)
+    Double getAveragePriceScoreForRestaurant(Long restaurantId);
 
+    @Query(value = "SELECT AVG(service_score) FROM score WHERE restaurant_id = ?1", nativeQuery = true)
+    Double getAverageServiceScoreForRestaurant(Long restaurantId);
+
+    @Query(value = "SELECT AVG(taste_score) FROM score WHERE restaurant_id = ?1", nativeQuery = true)
+    Double getAverageTasteScoreForRestaurant(Long restaurantId);
 
 }

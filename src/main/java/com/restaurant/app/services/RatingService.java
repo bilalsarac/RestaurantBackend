@@ -7,14 +7,11 @@ import com.restaurant.app.repos.RatingRepository;
 import com.restaurant.app.requests.RatingCreateRequest;
 import com.restaurant.app.requests.RatingUpdateRequest;
 import com.restaurant.app.response.RatingResponse;
-import com.restaurant.app.response.RestaurantResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,15 +22,12 @@ public class RatingService {
     private RestaurantService restaurantService;
 
 
-    public RatingService(RatingRepository ratingRepository, UserService userService) {
+    public RatingService(RatingRepository ratingRepository, UserService userService,@Lazy RestaurantService restaurantService) {
         this.ratingRepository = ratingRepository;
         this.userService = userService;
-
-    }
-
-    public void setRestaurantService(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
+
 
     public List<RatingResponse> getAllRatings(Optional<Long> userId, Optional<Long> ratingId) {
         List<Rating> ratings;
@@ -41,7 +35,7 @@ public class RatingService {
             ratings = ratingRepository.findByUserId(userId.get());
         }else
             ratings = ratingRepository.findAll();
-        return ratings.stream().map(rating -> new RatingResponse(rating)).collect(Collectors.toList());
+        return ratings.stream().map(rating -> new RatingResponse()).collect(Collectors.toList());
     }
 
     public Rating getOneRatingById(Long ratingId) {
@@ -85,5 +79,30 @@ public class RatingService {
     }
 
 
+    public void createRatingByUserIdAndRestaurantId(Long userId, Long restaurantId, RatingCreateRequest newRating) {
+        User user = userService.getOneUserById(userId);
+        Restaurant restaurant = restaurantService.getOneRestaurantById(restaurantId);
 
+        Rating toSave = new Rating();
+        toSave.setRestaurant(restaurant);
+        toSave.setUser(user);
+        toSave.setServiceScore(newRating.getServiceScore());
+        toSave.setTasteScore(newRating.getTasteScore());
+        toSave.setPriceScore(newRating.getPriceScore());
+        ratingRepository.save(toSave);
+    }
+
+    public RatingResponse getRestaurantsAveragePoints(Long restaurantId) {
+        double priceAverage = ratingRepository.getAveragePriceScoreForRestaurant(restaurantId);
+        double tasteAverage = ratingRepository.getAverageTasteScoreForRestaurant(restaurantId);
+        double serviceAverage = ratingRepository.getAverageServiceScoreForRestaurant(restaurantId);
+
+        RatingResponse ratingResponse = new RatingResponse();
+        ratingResponse.setTasteScore(tasteAverage);
+        ratingResponse.setPriceScore(priceAverage);
+        ratingResponse.setServiceScore(serviceAverage);
+        ratingResponse.setRestaurantId(restaurantId);
+
+        return ratingResponse;
+    }
 }

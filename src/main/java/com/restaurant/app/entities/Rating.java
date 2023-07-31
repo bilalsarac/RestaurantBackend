@@ -13,26 +13,26 @@ public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Min(1)
     @Max(10)
-    double serviceScore;
+    private double serviceScore;
 
     @Min(1)
     @Max(10)
-    double tasteScore;
+    private double tasteScore;
 
     @Min(1)
     @Max(10)
-    double priceScore;
+    private double priceScore;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
-    Restaurant restaurant;
+    private Restaurant restaurant;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
 }

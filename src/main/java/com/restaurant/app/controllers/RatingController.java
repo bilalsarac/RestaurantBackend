@@ -62,5 +62,15 @@ public class RatingController {
         ratingService.deleteOneRating(ratingId);
     }
 
+    @PostMapping("/{userId}/{restaurantId}")
+    public void createRatingByUserIdAndRestaurantId(@PathVariable Long userId,@PathVariable Long restaurantId, @RequestBody RatingCreateRequest newRating){
+        ratingService.createRatingByUserIdAndRestaurantId(userId,restaurantId,newRating);
+    }
+
+    @GetMapping("/restaurantratings/{restaurantId}")
+    public RatingResponse getRestaurantsAveragePoints(@PathVariable Long restaurantId){
+        return ratingService.getRestaurantsAveragePoints(restaurantId);
+
+    }
 
 }

@@ -15,21 +15,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @NotNull
     @Column(unique = true)
     @Email(message = "Invalid email format")
-    String email;
+    private String email;
 
     @NotNull
-    String password;
+    private String password;
 
     @Column(nullable = true)
-    String role;
+    private String role;
 
     @Lob
     @Column(nullable = true)
-    String photoUrl;
+    private String photoUrl;
 
 }

@@ -14,21 +14,21 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    User user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    Restaurant restaurant;
+    private Restaurant restaurant;
 
-    String text;
+    private String text;
 
     @Temporal(TemporalType.TIMESTAMP)
-    Date createDate;
+    private Date createDate;
 
 }

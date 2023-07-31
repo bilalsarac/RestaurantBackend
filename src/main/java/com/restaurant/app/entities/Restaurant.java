@@ -15,24 +15,24 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
-    String category;
+    private String category;
 
-    String address;
+    private String address;
 
     @Lob
-    String photoUrl;
+    private String photoUrl;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", nullable=false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    User user;
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
-    Date createDate;
+    private Date createDate;
 
     private double tasteAverage;
     private double serviceAverage;
