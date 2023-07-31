@@ -34,9 +34,7 @@ public class Restaurant {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
-    private double tasteAverage;
-    private double serviceAverage;
-    private double priceAverage;
+
 
 
 }
