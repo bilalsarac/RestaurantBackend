@@ -8,10 +8,11 @@ import lombok.Data;
 public class RatingResponse {
     private Long id;
     private Long userId;
-    private int tasteScore;
-    private int priceScore;
-    private int serviceScore;
+    private double tasteScore;
+    private double priceScore;
+    private double serviceScore;
     private String email;
+    private Long restaurantId;
 
 
 
@@ -22,5 +23,6 @@ public class RatingResponse {
         this.tasteScore = entity.getTasteScore();
         this.priceScore = entity.getPriceScore();
         this.email = entity.getUser().getEmail();
+        this.restaurantId = entity.getRestaurant().getId();
     }
 }

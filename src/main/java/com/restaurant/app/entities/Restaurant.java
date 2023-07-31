@@ -23,6 +23,7 @@ public class Restaurant {
 
     String address;
 
+    @Lob
     String photoUrl;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,6 +33,10 @@ public class Restaurant {
 
     @Temporal(TemporalType.TIMESTAMP)
     Date createDate;
+
+    private double tasteAverage;
+    private double serviceAverage;
+    private double priceAverage;
 
 
 }

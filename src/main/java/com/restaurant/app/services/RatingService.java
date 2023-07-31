@@ -1,22 +1,20 @@
 package com.restaurant.app.services;
 
-import com.restaurant.app.entities.Comment;
 import com.restaurant.app.entities.Rating;
 import com.restaurant.app.entities.Restaurant;
 import com.restaurant.app.entities.User;
-import com.restaurant.app.repos.CommentRepository;
 import com.restaurant.app.repos.RatingRepository;
-import com.restaurant.app.requests.CommentCreateRequest;
-import com.restaurant.app.requests.CommentUpdateRequest;
 import com.restaurant.app.requests.RatingCreateRequest;
 import com.restaurant.app.requests.RatingUpdateRequest;
-import com.restaurant.app.response.CommentResponse;
 import com.restaurant.app.response.RatingResponse;
+import com.restaurant.app.response.RestaurantResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +24,14 @@ public class RatingService {
     private UserService userService;
     private RestaurantService restaurantService;
 
-    public RatingService(RatingRepository ratingRepository, UserService userService, RestaurantService restaurantService) {
+
+    public RatingService(RatingRepository ratingRepository, UserService userService) {
         this.ratingRepository = ratingRepository;
         this.userService = userService;
+
+    }
+
+    public void setRestaurantService(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 
@@ -53,7 +56,7 @@ public class RatingService {
 
             Rating ratingToSave = new Rating();
             ratingToSave.setId(request.getId());
-            ratingToSave.setRestaurant(restaurant);
+           // ratingToSave.setRe(restaurant.getId());
             ratingToSave.setUser(user);
             ratingToSave.setServiceScore(request.getServiceScore());
             ratingToSave.setTasteScore(request.getTasteScore());
@@ -80,4 +83,7 @@ public class RatingService {
     public void deleteOneRating(Long ratingId) {
         ratingRepository.deleteById(ratingId);
     }
+
+
+
 }

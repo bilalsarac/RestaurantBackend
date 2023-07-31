@@ -28,4 +28,8 @@ public class User {
     @Column(nullable = true)
     String role;
 
+    @Lob
+    @Column(nullable = true)
+    String photoUrl;
+
 }

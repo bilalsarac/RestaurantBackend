@@ -5,6 +5,7 @@ import com.restaurant.app.entities.User;
 import com.restaurant.app.exceptions.UserNotFoundException;
 import com.restaurant.app.requests.RestaurantCreateRequest;
 import com.restaurant.app.requests.RestaurantUpdateRequest;
+import com.restaurant.app.response.RestaurantResponse;
 import com.restaurant.app.services.RestaurantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public List<Restaurant> getAllRestaurants(){
+    public List<RestaurantResponse> getAllRestaurants(){
         return restaurantService.getAllRestaurants();
     }
 
@@ -38,9 +39,7 @@ public class RestaurantController {
     @GetMapping("/{restaurantId}")
     public Restaurant getOneRestaurant(@PathVariable Long restaurantId) {
         Restaurant restaurant = restaurantService.getOneRestaurantById(restaurantId);
-        if(restaurant == null) {
-            throw new UserNotFoundException();
-        }
+
         return restaurant;
     }
 
@@ -56,5 +55,10 @@ public class RestaurantController {
     @DeleteMapping("/{restaurantId}")
     public void deleteOneRestaurant(@PathVariable Long restaurantId) {
         restaurantService.deleteOneRestaurant(restaurantId);
+    }
+
+    @GetMapping("/{userId}/restaurants")
+    public List<Restaurant> getRestaurantsByUserId(@PathVariable Long userId){
+        return restaurantService.getRestaurantsByUserId(userId);
     }
 }

@@ -22,8 +22,8 @@ public class CommentController {
 
     @GetMapping
     public List<CommentResponse> getAllComments(@RequestParam Optional<Long> userId,
-                                                @RequestParam Optional<Long> commentId) {
-        return commentService.getAllCommentsWithParam(userId, commentId);
+                                                @RequestParam Optional<Long> restaurantId) {
+        return commentService.getAllCommentsWithParam(userId, restaurantId);
     }
 
     @PostMapping
@@ -45,4 +45,15 @@ public class CommentController {
     public void deleteOneComment(@PathVariable Long commentId) {
         commentService.deleteOneCommentById(commentId);
     }
+
+    @PutMapping("/{userId}/{restaurantId}")
+    public void editOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId,@RequestBody CommentCreateRequest newComment) {
+        commentService.editOneCommentByRestaurantAndUserIds(userId,restaurantId,newComment);
+    }
+
+    @DeleteMapping("/{userId}/{restaurantId}")
+    public void deleteOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId) {
+        commentService.deleteOneCommentByRestaurantAndUserIds(userId,restaurantId);
+    }
+
 }

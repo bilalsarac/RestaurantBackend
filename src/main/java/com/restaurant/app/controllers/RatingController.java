@@ -61,4 +61,6 @@ public class RatingController {
     public void deleteOneRating(@PathVariable Long ratingId) {
         ratingService.deleteOneRating(ratingId);
     }
+
+
 }

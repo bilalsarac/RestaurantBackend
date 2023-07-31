@@ -1,36 +1,48 @@
 package com.restaurant.app.services;
 
+
 import com.restaurant.app.entities.Restaurant;
 import com.restaurant.app.entities.User;
 import com.restaurant.app.repos.RestaurantRepository;
 import com.restaurant.app.requests.RestaurantCreateRequest;
 import com.restaurant.app.requests.RestaurantUpdateRequest;
+import com.restaurant.app.response.RatingResponse;
+import com.restaurant.app.response.RestaurantResponse;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantService {
 
     private RestaurantRepository restaurantRepository;
     private UserService userService;
+    private RatingService ratingService;
 
 
-    public RestaurantService(RestaurantRepository restaurantRepository, UserService userService) {
+    public RestaurantService(RestaurantRepository restaurantRepository, UserService userService, RatingService ratingService) {
         this.restaurantRepository = restaurantRepository;
         this.userService = userService;
+        this.ratingService = ratingService;
     }
 
-    public List<Restaurant> getAllRestaurants() {
-        List<Restaurant> restaurants;
-        restaurants = restaurantRepository.findAll();
-        return restaurants;
+    public List<RestaurantResponse> getAllRestaurants() {
+        List<Restaurant> restaurants = restaurantRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
+
+        return restaurants.stream().map(restaurant -> {
+            List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(restaurant.getId()));
+            return new RestaurantResponse(restaurant, ratings);
+        }).collect(Collectors.toList());
     }
 
     public Restaurant getOneRestaurantById(Long restaurantId) {
-        return restaurantRepository.findById(restaurantId).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
+       return restaurant;
+
     }
 
     public Restaurant saveOneRestaurant(RestaurantCreateRequest newRestaurant) {
@@ -68,4 +80,11 @@ public class RestaurantService {
     public void deleteOneRestaurant(Long restaurantId) {
         restaurantRepository.deleteById(restaurantId);
     }
+
+    public List<Restaurant> getRestaurantsByUserId(Long userId) {
+        List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
+        return  restaurants;
+    }
+
+
 }

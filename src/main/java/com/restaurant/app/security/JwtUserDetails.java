@@ -36,8 +36,16 @@ public class JwtUserDetails implements UserDetails {
         switch (Objects.requireNonNull(user.getRole())) {
 
             case "admin":
-                authoritiesList.add(new SimpleGrantedAuthority("user"));
                 authoritiesList.add(new SimpleGrantedAuthority("admin"));
+                authoritiesList.add(new SimpleGrantedAuthority("senior"));
+
+
+
+                break;
+            case "senior":
+                authoritiesList.add(new SimpleGrantedAuthority("senior"));
+
+
                 break;
             // Add more cases for other roles if needed
             default:

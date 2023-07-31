@@ -13,7 +13,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByUserId(Long userId);
 
 
+    List<Comment> findByRestaurantId(Long aLong);
+
+    Comment findByUserIdAndRestaurantId(Long aLong, Long aLong1);
 
 
-
+    void deleteByUserIdAndRestaurantId(Long userId, Long restaurantId);
 }

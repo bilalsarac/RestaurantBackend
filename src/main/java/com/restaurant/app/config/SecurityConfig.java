@@ -86,6 +86,9 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/ratings/**")
                 .permitAll()
+                .antMatchers("/users/**")
+                .permitAll()
+
                 .antMatchers("/admin").hasAuthority("admin")
                 .anyRequest().authenticated();
 

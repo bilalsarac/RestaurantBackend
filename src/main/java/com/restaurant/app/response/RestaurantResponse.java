@@ -16,10 +16,14 @@ public class RestaurantResponse {
     private String address;
     private String photoUrl;
     private Date createDate;
-    private List<Rating> ratings;
+    private List<RatingResponse> ratings;
+    private double tasteAverage;
+    private double serviceAverage;
+    private double priceAverage;
 
 
-    public RestaurantResponse(Restaurant entity, List<Rating> ratings){
+
+    public RestaurantResponse(Restaurant entity, List<RatingResponse> ratings){
         this.id = entity.getId();
         this.userId = entity.getUser().getId();
         this.name = entity.getName();
@@ -28,6 +32,8 @@ public class RestaurantResponse {
         this.ratings = ratings;
         this.photoUrl = entity.getPhotoUrl();
         this.createDate = entity.getCreateDate();
+
+
     }
 
 }
