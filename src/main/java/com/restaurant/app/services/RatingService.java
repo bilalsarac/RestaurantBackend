@@ -1,15 +1,18 @@
 package com.restaurant.app.services;
 
+import com.restaurant.app.entities.Comment;
 import com.restaurant.app.entities.Rating;
 import com.restaurant.app.entities.Restaurant;
 import com.restaurant.app.entities.User;
 import com.restaurant.app.repos.RatingRepository;
 import com.restaurant.app.requests.RatingCreateRequest;
 import com.restaurant.app.requests.RatingUpdateRequest;
+import com.restaurant.app.response.CommentResponse;
 import com.restaurant.app.response.RatingResponse;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,11 +32,15 @@ public class RatingService {
     }
 
 
-    public List<RatingResponse> getAllRatings(Optional<Long> userId, Optional<Long> ratingId) {
+    public List<RatingResponse> getAllRatings(Optional<Long> userId, Optional<Long> restaurantId) {
         List<Rating> ratings;
          if(userId.isPresent()) {
             ratings = ratingRepository.findByUserId(userId.get());
-        }else
+        }else if(restaurantId.isPresent()){
+             ratings = ratingRepository.findByRestaurantId(restaurantId.get());
+         }
+
+         else
             ratings = ratingRepository.findAll();
         return ratings.stream().map(rating -> new RatingResponse()).collect(Collectors.toList());
     }
@@ -44,39 +51,29 @@ public class RatingService {
     }
 
     public Rating createOneRating(RatingCreateRequest request) {
-        User user = userService.getOneUserById(request.getUserId());
-        Restaurant restaurant = restaurantService.getOneRestaurantById(request.getRestaurantId());
-        if(user != null && restaurant != null) {
 
-            Rating ratingToSave = new Rating();
-            ratingToSave.setId(request.getId());
-           // ratingToSave.setRe(restaurant.getId());
-            ratingToSave.setUser(user);
-            ratingToSave.setServiceScore(request.getServiceScore());
-            ratingToSave.setTasteScore(request.getTasteScore());
-            ratingToSave.setPriceScore(request.getPriceScore());
-            return ratingRepository.save(ratingToSave);
-        }else
-            return null;
+        Rating ratingToSave = new Rating();
+        ratingToSave.setId(request.getId());
+        ratingToSave.setServiceScore(request.getServiceScore());
+        ratingToSave.setTasteScore(request.getTasteScore());
+        ratingToSave.setPriceScore(request.getPriceScore());
+        return ratingRepository.save(ratingToSave);
+
     }
 
 
+    public Rating updateOneRating(Long userId,Long restaurantId, RatingUpdateRequest request) {
 
-    public Rating updateOneRating(Long ratingId, RatingUpdateRequest request) {
-        Optional<Rating> rating = ratingRepository.findById(ratingId);
-        if(rating.isPresent()) {
-            Rating commentToUpdate = rating.get();
+        Rating rating = ratingRepository.findByUserIdAndRestaurantId(userId,restaurantId);
+
+            Rating commentToUpdate = rating;
             commentToUpdate.setPriceScore(request.getPriceScore());
             commentToUpdate.setTasteScore(request.getTasteScore());
             commentToUpdate.setServiceScore(request.getServiceScore());
             return ratingRepository.save(commentToUpdate);
-        }else
-            return null;
+
     }
 
-    public void deleteOneRating(Long ratingId) {
-        ratingRepository.deleteById(ratingId);
-    }
 
 
     public void createRatingByUserIdAndRestaurantId(Long userId, Long restaurantId, RatingCreateRequest newRating) {
@@ -104,5 +101,28 @@ public class RatingService {
         ratingResponse.setRestaurantId(restaurantId);
 
         return ratingResponse;
+    }
+
+    public RatingResponse getOneRatingByRestaurantAndUserIds(Long userId, Long restaurantId) {
+        Rating rating =  ratingRepository.findByUserIdAndRestaurantId(userId, restaurantId);
+
+        RatingResponse ratingResponse = new RatingResponse();
+        ratingResponse.setId(rating.getId());
+        ratingResponse.setRestaurantId(rating.getRestaurant().getId());
+        ratingResponse.setUserId(rating.getUser().getId());
+        ratingResponse.setTasteScore(rating.getTasteScore());
+        ratingResponse.setServiceScore(rating.getServiceScore());
+        ratingResponse.setPriceScore(rating.getPriceScore());
+
+
+        return ratingResponse;
+    }
+    @Transactional
+    public void deleteOneRating(Long userId, Long restaurantId) {
+         ratingRepository.deleteByUserIdAndRestaurantId(userId,restaurantId);
+    }
+    @Transactional
+    public void deleteRatingsByRestaurantId(Long restaurantId){
+        ratingRepository.deleteRatingsByRestaurantId(restaurantId);
     }
 }

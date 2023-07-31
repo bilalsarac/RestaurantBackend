@@ -11,6 +11,7 @@ public class RatingResponse {
     private double priceScore;
     private double serviceScore;
     private Long restaurantId;
+    private Long userId;
 
 
 

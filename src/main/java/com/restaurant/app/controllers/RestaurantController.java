@@ -9,6 +9,7 @@ import com.restaurant.app.response.RestaurantResponse;
 import com.restaurant.app.services.RestaurantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class RestaurantController {
     }
 
     @PostMapping
+    @PreAuthorize("senior")
     public ResponseEntity<Void> createRestaurant(@RequestBody RestaurantCreateRequest newRestaurant) {
         Restaurant restaurant = restaurantService.saveOneRestaurant(newRestaurant);
         if(restaurant != null)
@@ -44,6 +46,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurantId}")
+    @PreAuthorize("senior")
     public ResponseEntity<User> updateOneRestaurant(@PathVariable Long restaurantId, @RequestBody RestaurantUpdateRequest newRestaurant) {
         Restaurant restaurant = restaurantService.updateOneRestaurant(restaurantId, newRestaurant);
         if(restaurant != null)
@@ -53,6 +56,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{restaurantId}")
+    @PreAuthorize("admin")
     public void deleteOneRestaurant(@PathVariable Long restaurantId) {
         restaurantService.deleteOneRestaurant(restaurantId);
     }

@@ -26,4 +26,10 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     @Query(value = "SELECT AVG(taste_score) FROM score WHERE restaurant_id = ?1", nativeQuery = true)
     Double getAverageTasteScoreForRestaurant(Long restaurantId);
 
+    Rating findByUserIdAndRestaurantId(Long userId, Long restaurantId);
+
+
+    void deleteByUserIdAndRestaurantId(Long userId, Long restaurantId);
+
+    void deleteRatingsByRestaurantId(Long restaurantId);
 }

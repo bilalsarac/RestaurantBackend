@@ -1,6 +1,8 @@
 package com.restaurant.app.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -29,6 +31,7 @@ public class Rating {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @ManyToOne

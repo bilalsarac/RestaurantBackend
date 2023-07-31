@@ -6,6 +6,7 @@ import com.restaurant.app.entities.User;
 import com.restaurant.app.exceptions.UserNotFoundException;
 import com.restaurant.app.requests.RatingCreateRequest;
 import com.restaurant.app.requests.RatingUpdateRequest;
+import com.restaurant.app.response.CommentResponse;
 import com.restaurant.app.response.RatingResponse;
 import com.restaurant.app.services.RatingService;
 import org.springframework.http.HttpStatus;
@@ -48,23 +49,28 @@ public class RatingController {
         return rating;
     }
 
-    @PutMapping("/{ratingId}")
-    public ResponseEntity<User> updateOneRating(@PathVariable Long ratingId, @RequestBody RatingUpdateRequest newRating) {
-        Rating rating = ratingService.updateOneRating(ratingId, newRating);
+    @PutMapping("/{userId}/{restaurantId}")
+    public ResponseEntity<Rating> updateOneRating(@PathVariable Long userId,@PathVariable Long restaurantId, @RequestBody RatingUpdateRequest newRating) {
+        Rating rating = ratingService.updateOneRating(userId,restaurantId, newRating);
         if(rating != null)
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
+    @DeleteMapping("/{userId}/{restaurantId}")
+    public void deleteOneRating(@PathVariable Long userId,@PathVariable Long restaurantId) {
+       ratingService.deleteOneRating(userId,restaurantId);
 
-    @DeleteMapping("/{ratingId}")
-    public void deleteOneRating(@PathVariable Long ratingId) {
-        ratingService.deleteOneRating(ratingId);
     }
+
 
     @PostMapping("/{userId}/{restaurantId}")
     public void createRatingByUserIdAndRestaurantId(@PathVariable Long userId,@PathVariable Long restaurantId, @RequestBody RatingCreateRequest newRating){
         ratingService.createRatingByUserIdAndRestaurantId(userId,restaurantId,newRating);
+    }
+    @GetMapping("/{userId}/{restaurantId}")
+    public RatingResponse getOneCommentByRestaurantAndUserIds(@PathVariable Long userId, @PathVariable Long restaurantId) {
+        return ratingService.getOneRatingByRestaurantAndUserIds(userId,restaurantId);
     }
 
     @GetMapping("/restaurantratings/{restaurantId}")

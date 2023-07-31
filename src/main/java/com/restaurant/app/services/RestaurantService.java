@@ -78,6 +78,10 @@ public class RestaurantService {
     }
 
     public void deleteOneRestaurant(Long restaurantId) {
+        List<RatingResponse> ratings = ratingService.getAllRatings(Optional.empty(), Optional.of(restaurantId));
+        ratingService.deleteRatingsByRestaurantId(restaurantId);
+
+
         restaurantRepository.deleteById(restaurantId);
     }
 
