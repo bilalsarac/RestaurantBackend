@@ -50,6 +50,10 @@ public class CommentController {
     public void editOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId,@RequestBody CommentCreateRequest newComment) {
         commentService.editOneCommentByRestaurantAndUserIds(userId,restaurantId,newComment);
     }
+    @GetMapping("/{userId}/{restaurantId}")
+    public CommentResponse getOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId) {
+        return commentService.getOneCommentByRestaurantAndUserIds(userId,restaurantId);
+    }
 
     @DeleteMapping("/{userId}/{restaurantId}")
     public void deleteOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId) {

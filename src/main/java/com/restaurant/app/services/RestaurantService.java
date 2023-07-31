@@ -81,9 +81,12 @@ public class RestaurantService {
         restaurantRepository.deleteById(restaurantId);
     }
 
-    public List<Restaurant> getRestaurantsByUserId(Long userId) {
+    public List<RestaurantResponse> getRestaurantsByUserId(Long userId) {
         List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
-        return  restaurants;
+        return restaurants.stream().map(r -> {
+            List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(r.getId()));
+            return new RestaurantResponse(r, ratings);}).collect(Collectors.toList());
+
     }
 
 

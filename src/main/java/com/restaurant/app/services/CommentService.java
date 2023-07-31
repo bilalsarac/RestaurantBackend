@@ -7,6 +7,8 @@ import com.restaurant.app.repos.CommentRepository;
 import com.restaurant.app.requests.CommentCreateRequest;
 import com.restaurant.app.requests.CommentUpdateRequest;
 import com.restaurant.app.response.CommentResponse;
+import com.restaurant.app.response.RatingResponse;
+import com.restaurant.app.response.RestaurantResponse;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -85,4 +87,16 @@ public class CommentService {
         return commentRepository.save(commentToUpdate);
         }
 
+    public CommentResponse getOneCommentByRestaurantAndUserIds(Long userId, Long restaurantId) {
+       Comment comment =  commentRepository.findByUserIdAndRestaurantId(userId, restaurantId);
+
+        CommentResponse commentResponse = new CommentResponse(comment);
+        commentResponse.setId(comment.getId());
+        commentResponse.setUserId(comment.getUser().getId());
+        commentResponse.setEmail(comment.getUser().getEmail());
+        commentResponse.setText(comment.getText());
+
+        return commentResponse;
+
+    }
 }

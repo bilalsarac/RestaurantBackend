@@ -58,7 +58,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/{userId}/restaurants")
-    public List<Restaurant> getRestaurantsByUserId(@PathVariable Long userId){
+    public List<RestaurantResponse> getRestaurantsByUserId(@PathVariable Long userId){
         return restaurantService.getRestaurantsByUserId(userId);
     }
 }
