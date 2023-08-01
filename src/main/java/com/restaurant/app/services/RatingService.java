@@ -34,19 +34,19 @@ public class RatingService {
 
     public List<RatingResponse> getAllRatings(Optional<Long> userId, Optional<Long> restaurantId) {
         List<Rating> ratings;
-         if(userId.isPresent()) {
+        if(userId.isPresent()) {
             ratings = ratingRepository.findByUserId(userId.get());
         }else if(restaurantId.isPresent()){
-             ratings = ratingRepository.findByRestaurantId(restaurantId.get());
-         }
+            ratings = ratingRepository.findByRestaurantId(restaurantId.get());
+        }
 
-         else
+        else
             ratings = ratingRepository.findAll();
         return ratings.stream().map(rating -> new RatingResponse()).collect(Collectors.toList());
     }
 
     public Rating getOneRatingById(Long ratingId) {
-       return ratingRepository.findById(ratingId).orElse(null);
+        return ratingRepository.findById(ratingId).orElse(null);
 
     }
 
@@ -66,11 +66,11 @@ public class RatingService {
 
         Rating rating = ratingRepository.findByUserIdAndRestaurantId(userId,restaurantId);
 
-            Rating commentToUpdate = rating;
-            commentToUpdate.setPriceScore(request.getPriceScore());
-            commentToUpdate.setTasteScore(request.getTasteScore());
-            commentToUpdate.setServiceScore(request.getServiceScore());
-            return ratingRepository.save(commentToUpdate);
+        Rating commentToUpdate = rating;
+        commentToUpdate.setPriceScore(request.getPriceScore());
+        commentToUpdate.setTasteScore(request.getTasteScore());
+        commentToUpdate.setServiceScore(request.getServiceScore());
+        return ratingRepository.save(commentToUpdate);
 
     }
 
@@ -98,7 +98,6 @@ public class RatingService {
         ratingResponse.setTasteScore(tasteAverage);
         ratingResponse.setPriceScore(priceAverage);
         ratingResponse.setServiceScore(serviceAverage);
-        ratingResponse.setRestaurantId(restaurantId);
 
         return ratingResponse;
     }
@@ -107,9 +106,7 @@ public class RatingService {
         Rating rating =  ratingRepository.findByUserIdAndRestaurantId(userId, restaurantId);
 
         RatingResponse ratingResponse = new RatingResponse();
-        ratingResponse.setId(rating.getId());
-        ratingResponse.setRestaurantId(rating.getRestaurant().getId());
-        ratingResponse.setUserId(rating.getUser().getId());
+
         ratingResponse.setTasteScore(rating.getTasteScore());
         ratingResponse.setServiceScore(rating.getServiceScore());
         ratingResponse.setPriceScore(rating.getPriceScore());
@@ -119,7 +116,7 @@ public class RatingService {
     }
     @Transactional
     public void deleteOneRating(Long userId, Long restaurantId) {
-         ratingRepository.deleteByUserIdAndRestaurantId(userId,restaurantId);
+        ratingRepository.deleteByUserIdAndRestaurantId(userId,restaurantId);
     }
     @Transactional
     public void deleteRatingsByRestaurantId(Long restaurantId){

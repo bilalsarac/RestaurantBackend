@@ -35,13 +35,13 @@ public class RestaurantService {
 
         return restaurants.stream().map(restaurant -> {
             List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(restaurant.getId()));
-            return new RestaurantResponse(restaurant, ratings);
+            return new RestaurantResponse(restaurant);
         }).collect(Collectors.toList());
     }
 
     public Restaurant getOneRestaurantById(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
-       return restaurant;
+        return restaurant;
 
     }
 
@@ -89,7 +89,7 @@ public class RestaurantService {
         List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
         return restaurants.stream().map(r -> {
             List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(r.getId()));
-            return new RestaurantResponse(r, ratings);}).collect(Collectors.toList());
+            return new RestaurantResponse(r);}).collect(Collectors.toList());
 
     }
 

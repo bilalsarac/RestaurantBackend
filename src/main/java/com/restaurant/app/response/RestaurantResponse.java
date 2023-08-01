@@ -17,19 +17,16 @@ public class RestaurantResponse {
     private String photoUrl;
     private Date createDate;
     private List<RatingResponse> ratings;
-    private double tasteAverage;
-    private double serviceAverage;
-    private double priceAverage;
 
 
 
-    public RestaurantResponse(Restaurant entity, List<RatingResponse> ratings){
+    public RestaurantResponse(Restaurant entity){
         this.id = entity.getId();
         this.userId = entity.getUser().getId();
         this.name = entity.getName();
         this.category = entity.getCategory();
         this.address = entity.getAddress();
-        this.ratings = ratings;
+
         this.photoUrl = entity.getPhotoUrl();
         this.createDate = entity.getCreateDate();
 

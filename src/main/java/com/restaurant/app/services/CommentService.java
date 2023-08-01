@@ -85,10 +85,10 @@ public class CommentService {
         Comment commentToUpdate = comment;
         commentToUpdate.setText(newComment.getText());
         return commentRepository.save(commentToUpdate);
-        }
+    }
 
     public CommentResponse getOneCommentByRestaurantAndUserIds(Long userId, Long restaurantId) {
-       Comment comment =  commentRepository.findByUserIdAndRestaurantId(userId, restaurantId);
+        Comment comment =  commentRepository.findByUserIdAndRestaurantId(userId, restaurantId);
 
         CommentResponse commentResponse = new CommentResponse(comment);
         commentResponse.setId(comment.getId());

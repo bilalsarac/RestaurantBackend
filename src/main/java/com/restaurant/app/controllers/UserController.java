@@ -23,11 +23,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    //ok
     @GetMapping
     public List<UserResponse> getAllUsers(){
         return userService.getAllUsers().stream().map(u -> new UserResponse(u)).toList();
     }
-
+    //ok
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody User newUser) {
         User user = userService.saveOneUser(newUser);
@@ -35,7 +36,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+    //ok
     @GetMapping("/{userId}")
     public UserResponse getOneUser(@PathVariable Long userId) {
         User user = userService.getOneUserById(userId);
@@ -44,7 +45,7 @@ public class UserController {
         }
         return new UserResponse(user);
     }
-
+    //non required
     @PutMapping("/{userId}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<User> updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
@@ -54,23 +55,12 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
-
+    //non required
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasRole('admin')")
     public void deleteOneUser(@PathVariable Long userId) {
         userService.deleteById(userId);
     }
-
-  /*  @GetMapping("/search")
-    public List<UserResponse> searchUsers(@RequestParam("keyword") String keyword) {
-        List<User> users = userService.searchUsers(keyword);
-        List<UserResponse> userResponses = users.stream()
-                .map(u -> new UserResponse(u))
-                .collect(Collectors.toList());
-        return userResponses;
-    }
-   */
-
 
 
     @ExceptionHandler(UserNotFoundException.class)

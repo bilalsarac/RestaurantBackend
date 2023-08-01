@@ -80,15 +80,24 @@ public class SecurityConfig {
                //DEBUG
                 .antMatchers(HttpMethod.GET, "/restaurants/**")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/comments")
+                .antMatchers(HttpMethod.GET, "/comments/**")
                 .permitAll()
                 .antMatchers("/auth/login")
                 .permitAll()
                 .antMatchers("/auth/register")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/restaurant").hasAuthority("senior")
-                .antMatchers(HttpMethod.PUT,"/restaurant/**").hasAuthority("senior")
-                .antMatchers(HttpMethod.DELETE,"/restaurant/**").hasAuthority("admin")
+                .antMatchers("/ratings/**")
+                .permitAll()
+                .antMatchers("/restaurantratings/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET,"/users/**")
+                .permitAll()
+
+              //  .antMatchers(HttpMethod.POST,"/restaurant").hasAuthority("senior")
+                .antMatchers(HttpMethod.POST,"/restaurants").permitAll()
+
+                .antMatchers(HttpMethod.PUT,"/restaurants/**").hasAuthority("senior")
+                .antMatchers(HttpMethod.DELETE,"/restaurants/**").hasAuthority("admin")
                 .antMatchers("/admin").hasAuthority("admin")
                 .anyRequest().authenticated();
 

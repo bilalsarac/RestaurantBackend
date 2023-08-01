@@ -6,12 +6,16 @@ import lombok.Data;
 
 @Data
 public class RatingResponse {
-    private Long id;
+
     private double tasteScore;
     private double priceScore;
     private double serviceScore;
-    private Long restaurantId;
-    private Long userId;
+
+  /*  public RatingResponse(Rating entity){
+        this.tasteScore = entity.getTasteScore();
+        this.priceScore = entity.getPriceScore();
+        this.serviceScore = entity.getServiceScore();
+    }*/
 
 
 

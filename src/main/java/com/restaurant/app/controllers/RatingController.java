@@ -59,7 +59,7 @@ public class RatingController {
     }
     @DeleteMapping("/{userId}/{restaurantId}")
     public void deleteOneRating(@PathVariable Long userId,@PathVariable Long restaurantId) {
-       ratingService.deleteOneRating(userId,restaurantId);
+        ratingService.deleteOneRating(userId,restaurantId);
 
     }
 

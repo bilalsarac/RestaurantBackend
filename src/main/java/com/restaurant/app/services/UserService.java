@@ -58,20 +58,11 @@ public class UserService {
             System.out.println("User "+userId+" doesn't exist");
         }
     }
-/*
-    public User getOneUserByUserName(String email) {
-        return userRepository.findByEmail(email);
-    }
-*/
+
     public User getOneUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
 
-    /**  public List<User> searchUsers(String name) {
 
-        return userRepository.findByKeyword(name);
-
-
-    }*/
 }
