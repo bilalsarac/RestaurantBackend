@@ -30,7 +30,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    @PreAuthorize("senior")
+    @PreAuthorize("hasRole('senior')")
     public ResponseEntity<Void> createRestaurant(@RequestBody RestaurantCreateRequest newRestaurant) {
         Restaurant restaurant = restaurantService.saveOneRestaurant(newRestaurant);
         if(restaurant != null)
@@ -46,7 +46,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurantId}")
-    @PreAuthorize("senior")
+    @PreAuthorize("hasRole('senior')")
     public ResponseEntity<User> updateOneRestaurant(@PathVariable Long restaurantId, @RequestBody RestaurantUpdateRequest newRestaurant) {
         Restaurant restaurant = restaurantService.updateOneRestaurant(restaurantId, newRestaurant);
         if(restaurant != null)
@@ -56,7 +56,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{restaurantId}")
-    @PreAuthorize("admin")
+    @PreAuthorize("hasRole('admin')")
     public void deleteOneRestaurant(@PathVariable Long restaurantId) {
         restaurantService.deleteOneRestaurant(restaurantId);
     }

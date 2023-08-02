@@ -77,7 +77,6 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/auth/login")
                 .permitAll()
-               //DEBUG
                 .antMatchers(HttpMethod.GET, "/restaurants/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/comments/**")
@@ -92,13 +91,9 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/users/**")
                 .permitAll()
-
-              //  .antMatchers(HttpMethod.POST,"/restaurant").hasAuthority("senior")
-                .antMatchers(HttpMethod.POST,"/restaurants").permitAll()
-
+                .antMatchers(HttpMethod.POST,"/restaurant").hasAuthority("senior")
                 .antMatchers(HttpMethod.PUT,"/restaurants/**").hasAuthority("senior")
                 .antMatchers(HttpMethod.DELETE,"/restaurants/**").hasAuthority("admin")
-                .antMatchers("/admin").hasAuthority("admin")
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
