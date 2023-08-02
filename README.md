@@ -41,6 +41,7 @@ The application can be run from the jar file with this command as well.
 `java -jar app-0.0.1-SNAPSHOT.jar`
 
 ## System Architecture
+Since the project should be effectively working with lots of data, URL string format is used.
 
 ### Config
 In this layer, define which requests such as GET, POST, PUT, PATCH, and DELETE can be made by users and who and which kind of role such as admin, senior, user can access which endpoints with the specified requests. In this app, only the admin has the authority to delete restaurants, and only seniors have the authority to add and edit restaurants.
@@ -57,12 +58,16 @@ This controller provides the same logic with comments. Since one rating can belo
 This controller provides /restaurants(GET) endpoint to get all restaurants,/restaurants/userId/restaurants(GET) endpoint to get all restaurants defined by the user, /restaurants/restaurantId(PUT, DELETE, GET) to update, delete and get one restaurant. Preauthorize annotation is used to distribute the authorities such as only seniors can edit and create restaurants.
 #### User Controller
 This controller provides /users(GET) endpoint to receive all the users, /users/userId(GET,PUT,POST,DELETE) endpoint to get one user, update the user, add the user and delete the user.
+
 ### Repository
 In this project, the JPA repository, which contains built-in elementary queries, was used to speed up the development process. In addition, native queries were used for extra features.
+
 ### Services
 The service layer is the layer that covers all the business logic of the application. This layer is responsible mostly for CRUD operations of the entities and converts entity objects to response objects. 
+
 ### Request and Responses
 Since there is data that should not be leaked in the API returns of users such as passwords, response objects were used in this project and entity objects were mapped to them, since we do not need to change the id fields when updating the data, request classes are used.
+
 ### Authentication
 JWT token-based authentication was used in this project.
 
