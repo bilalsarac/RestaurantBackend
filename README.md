@@ -68,6 +68,9 @@ The service layer is the layer that covers all the business logic of the applica
 ### Request and Responses
 Since there is data that should not be leaked in the API returns of users such as passwords, response objects were used in this project and entity objects were mapped to them, since we do not need to change the id fields when updating the data, request classes are used.
 
+### Test
+There are basic unit tests for repositories and services.
+
 ### Authentication
 JWT token-based authentication was used in this project.
 
