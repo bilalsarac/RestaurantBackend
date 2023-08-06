@@ -19,15 +19,15 @@ public class Rating {
 
     @Min(1)
     @Max(10)
-    private double serviceScore;
+    private Double serviceScore;
 
     @Min(1)
     @Max(10)
-    private double tasteScore;
+    private Double tasteScore;
 
     @Min(1)
     @Max(10)
-    private double priceScore;
+    private Double priceScore;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class RatingCreateRequest {
     private Long id;
-    private int priceScore;
-    private int tasteScore;
-    private int serviceScore;
+    private Double priceScore;
+    private Double tasteScore;
+    private Double serviceScore;
 }

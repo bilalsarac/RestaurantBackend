@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class RatingUpdateRequest {
 
-    private int serviceScore;
-    private int tasteScore;
-    private int priceScore;
+    private Double serviceScore;
+    private Double tasteScore;
+    private Double priceScore;
 }

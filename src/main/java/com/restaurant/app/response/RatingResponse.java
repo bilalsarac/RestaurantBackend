@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class RatingResponse {
 
-    private double tasteScore;
-    private double priceScore;
-    private double serviceScore;
+    private Double tasteScore;
+    private Double priceScore;
+    private Double serviceScore;
 
   /*  public RatingResponse(Rating entity){
         this.tasteScore = entity.getTasteScore();

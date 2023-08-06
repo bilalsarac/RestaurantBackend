@@ -90,15 +90,29 @@ public class RatingService {
     }
 
     public RatingResponse getRestaurantsAveragePoints(Long restaurantId) {
-        double priceAverage = ratingRepository.getAveragePriceScoreForRestaurant(restaurantId);
-        double tasteAverage = ratingRepository.getAverageTasteScoreForRestaurant(restaurantId);
-        double serviceAverage = ratingRepository.getAverageServiceScoreForRestaurant(restaurantId);
+        Double priceAverage = ratingRepository.getAveragePriceScoreForRestaurant(restaurantId);
+        Double tasteAverage = ratingRepository.getAverageTasteScoreForRestaurant(restaurantId);
+        Double serviceAverage = ratingRepository.getAverageServiceScoreForRestaurant(restaurantId);
 
         RatingResponse ratingResponse = new RatingResponse();
-        ratingResponse.setTasteScore(tasteAverage);
-        ratingResponse.setPriceScore(priceAverage);
-        ratingResponse.setServiceScore(serviceAverage);
 
+        if (priceAverage != null) {
+            ratingResponse.setPriceScore(priceAverage);
+        } else {
+            ratingResponse.setPriceScore(null);
+        }
+
+        if (tasteAverage != null) {
+            ratingResponse.setTasteScore(tasteAverage);
+        } else {
+            ratingResponse.setTasteScore(null);
+        }
+
+        if (serviceAverage != null) {
+            ratingResponse.setServiceScore(serviceAverage);
+        } else {
+            ratingResponse.setServiceScore(null);
+        }
         return ratingResponse;
     }
 
