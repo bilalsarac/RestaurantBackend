@@ -22,12 +22,18 @@ public class RestaurantController {
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
-
+    //ok
     @GetMapping
     public List<RestaurantResponse> getAllRestaurants(){
         return restaurantService.getAllRestaurants();
     }
-
+    //ok
+    @GetMapping("/{restaurantId}")
+    public RestaurantResponse getOneRestaurant(@PathVariable Long restaurantId) {
+        RestaurantResponse restaurant = restaurantService.getOneRestaurantForResponse(restaurantId);
+        return restaurant;
+    }
+    //ok
     @PostMapping
     @PreAuthorize("hasRole('senior')")
     public ResponseEntity<Void> createRestaurant(@RequestBody RestaurantCreateRequest newRestaurant) {
@@ -37,13 +43,7 @@ public class RestaurantController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping("/{restaurantId}")
-    public Restaurant getOneRestaurant(@PathVariable Long restaurantId) {
-        Restaurant restaurant = restaurantService.getOneRestaurantById(restaurantId);
-
-        return restaurant;
-    }
-
+    //ok
     @PutMapping("/{restaurantId}")
     @PreAuthorize("hasRole('senior')")
     public ResponseEntity<User> updateOneRestaurant(@PathVariable Long restaurantId, @RequestBody RestaurantUpdateRequest newRestaurant) {
@@ -53,13 +53,13 @@ public class RestaurantController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
-
+    //ok
     @DeleteMapping("/{restaurantId}")
     @PreAuthorize("hasRole('admin')")
     public void deleteOneRestaurant(@PathVariable Long restaurantId) {
         restaurantService.deleteOneRestaurant(restaurantId);
     }
-
+    //ok
     @GetMapping("/{userId}/restaurants")
     public List<RestaurantResponse> getRestaurantsByUserId(@PathVariable Long userId){
         return restaurantService.getRestaurantsByUserId(userId);

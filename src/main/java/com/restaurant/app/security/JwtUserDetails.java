@@ -37,9 +37,6 @@ public class JwtUserDetails implements UserDetails {
 
             case "admin":
                 authoritiesList.add(new SimpleGrantedAuthority("admin"));
-                authoritiesList.add(new SimpleGrantedAuthority("senior"));
-
-
 
                 break;
             case "senior":

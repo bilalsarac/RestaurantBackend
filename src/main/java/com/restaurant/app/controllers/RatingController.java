@@ -63,8 +63,14 @@ public class RatingController {
     }
     //ok
     @GetMapping("/rating")
-    public RatingResponse getOneCommentByRestaurantAndUserIds(@RequestParam Long userId, @RequestParam Long restaurantId) {
-        return ratingService.getOneRatingByRestaurantAndUserIds(userId,restaurantId);
+    public ResponseEntity<RatingResponse> getOneRatingByRestaurantAndUserIds(@RequestParam Long userId, @RequestParam Long restaurantId) {
+
+        RatingResponse ratingResponse =  ratingService.getOneRatingByRestaurantAndUserIds(userId,restaurantId);
+        if (ratingResponse != null){
+            return ResponseEntity.ok(ratingResponse);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
     //ok
     @GetMapping("/averageratings")

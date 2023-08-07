@@ -91,7 +91,7 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/users/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/restaurant").hasAuthority("senior")
+                .antMatchers(HttpMethod.POST,"/restaurants").hasAuthority("senior")
                 .antMatchers(HttpMethod.PUT,"/restaurants/**").hasAuthority("senior")
                 .antMatchers(HttpMethod.DELETE,"/restaurants/**").hasAuthority("admin")
                 .anyRequest().authenticated();

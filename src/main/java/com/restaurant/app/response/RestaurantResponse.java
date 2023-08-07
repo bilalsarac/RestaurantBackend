@@ -20,15 +20,15 @@ public class RestaurantResponse {
 
 
 
-    public RestaurantResponse(Restaurant entity){
+    public RestaurantResponse(Restaurant entity, List<RatingResponse> ratings){
         this.id = entity.getId();
         this.userId = entity.getUser().getId();
         this.name = entity.getName();
         this.category = entity.getCategory();
         this.address = entity.getAddress();
-
         this.photoUrl = entity.getPhotoUrl();
         this.createDate = entity.getCreateDate();
+        this.ratings = ratings;
 
 
     }

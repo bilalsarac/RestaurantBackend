@@ -1,6 +1,7 @@
 package com.restaurant.app.services;
 
 
+import com.restaurant.app.entities.Rating;
 import com.restaurant.app.entities.Restaurant;
 import com.restaurant.app.entities.User;
 import com.restaurant.app.repos.RestaurantRepository;
@@ -34,8 +35,8 @@ public class RestaurantService {
         List<Restaurant> restaurants = restaurantRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
 
         return restaurants.stream().map(restaurant -> {
-            List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(restaurant.getId()));
-            return new RestaurantResponse(restaurant);
+            List<RatingResponse> ratings = ratingService.getAllRatings (Optional.ofNullable(null), Optional.of(restaurant.getId()));
+            return new RestaurantResponse(restaurant, ratings);
         }).collect(Collectors.toList());
     }
 
@@ -43,6 +44,12 @@ public class RestaurantService {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
         return restaurant;
 
+    }
+    public RestaurantResponse getOneRestaurantForResponse(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
+        List<RatingResponse> ratings = ratingService.getAllRatings(Optional.empty(), Optional.of(restaurantId));
+        RestaurantResponse restaurantResponse = new RestaurantResponse(restaurant, ratings);
+        return restaurantResponse;
     }
 
     public Restaurant saveOneRestaurant(RestaurantCreateRequest newRestaurant) {
@@ -87,9 +94,9 @@ public class RestaurantService {
 
     public List<RestaurantResponse> getRestaurantsByUserId(Long userId) {
         List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
-        return restaurants.stream().map(r -> {
-            List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(r.getId()));
-            return new RestaurantResponse(r);}).collect(Collectors.toList());
+        return restaurants.stream().map(restaurant -> {
+            List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(restaurant.getId()));
+            return new RestaurantResponse(restaurant,ratings);}).collect(Collectors.toList());
 
     }
 
