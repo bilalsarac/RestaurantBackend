@@ -2,7 +2,6 @@ package com.restaurant.app.controllers;
 
 import com.restaurant.app.entities.Restaurant;
 import com.restaurant.app.entities.User;
-import com.restaurant.app.exceptions.UserNotFoundException;
 import com.restaurant.app.requests.RestaurantCreateRequest;
 import com.restaurant.app.requests.RestaurantUpdateRequest;
 import com.restaurant.app.response.RestaurantResponse;
