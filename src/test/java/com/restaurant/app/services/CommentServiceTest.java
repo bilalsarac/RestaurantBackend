@@ -83,7 +83,7 @@ public class CommentServiceTest {
 
         when(commentRepository.findById(1L)).thenReturn(Optional.of(comment));
 
-        Comment result = commentService.getOneCommentById(1L);
+        CommentResponse result = commentService.getOneCommentById(1L);
 
         assertNotNull(result);
         assertEquals("Test comment", result.getText());

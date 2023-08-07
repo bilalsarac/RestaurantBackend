@@ -1,12 +1,9 @@
 package com.restaurant.app.controllers;
 
 import com.restaurant.app.entities.Rating;
-import com.restaurant.app.entities.Restaurant;
-import com.restaurant.app.entities.User;
 import com.restaurant.app.exceptions.UserNotFoundException;
 import com.restaurant.app.requests.RatingCreateRequest;
 import com.restaurant.app.requests.RatingUpdateRequest;
-import com.restaurant.app.response.CommentResponse;
 import com.restaurant.app.response.RatingResponse;
 import com.restaurant.app.services.RatingService;
 import org.springframework.http.HttpStatus;

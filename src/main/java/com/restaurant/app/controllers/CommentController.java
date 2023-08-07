@@ -5,6 +5,8 @@ import com.restaurant.app.requests.CommentCreateRequest;
 import com.restaurant.app.requests.CommentUpdateRequest;
 import com.restaurant.app.response.CommentResponse;
 import com.restaurant.app.services.CommentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,44 +22,54 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    //ok
     @GetMapping
     public List<CommentResponse> getAllComments(@RequestParam Optional<Long> userId,
                                                 @RequestParam Optional<Long> restaurantId) {
         return commentService.getAllCommentsWithParam(userId, restaurantId);
     }
-
-    @PostMapping
-    public Comment createOneComment(@RequestBody CommentCreateRequest request) {
-        return commentService.createOneComment(request);
+    @GetMapping("/comment")
+    public ResponseEntity<CommentResponse> getComment(@RequestParam Long userId,
+                                                      @RequestParam Long restaurantId) {
+        CommentResponse commentResponse = commentService.getComment(userId, restaurantId);
+        if (commentResponse != null) {
+            return ResponseEntity.ok(commentResponse);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
+    //ok
+    @PostMapping
+    public String createOneComment(@RequestBody CommentCreateRequest request) {
+        Comment comment =  commentService.createOneComment(request);
+        if(comment == null){
+            return "Bad request";
+        }
+        else{
+            return "Created successfully.";
+        }
+    }
+
+    //ok
     @GetMapping("/{commentId}")
-    public Comment getOneComment(@PathVariable Long commentId) {
+    public CommentResponse getOneComment(@PathVariable Long commentId) {
         return commentService.getOneCommentById(commentId);
     }
 
-    @PutMapping("/{commentId}")
-    public Comment updateOneComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequest request) {
-        return commentService.updateOneCommentById(commentId, request);
+    //ok
+    // changed pathvariable to requestparam
+    @PutMapping()
+    public CommentResponse editOneCommentByRestaurantAndUserIds(@RequestParam Long userId,@RequestParam Long restaurantId,@RequestBody CommentUpdateRequest updatedComment) {
+         return commentService.editOneCommentByRestaurantAndUserIds(userId,restaurantId,updatedComment);
     }
 
-    @DeleteMapping("/{commentId}")
-    public void deleteOneComment(@PathVariable Long commentId) {
-        commentService.deleteOneCommentById(commentId);
-    }
+    //ok
+    // changed pathvariable to requestparam
+    @DeleteMapping()
+    public ResponseEntity<String> deleteOneCommentByRestaurantAndUserIds(@RequestParam Long userId, @RequestParam Long restaurantId) {
 
-    @PutMapping("/{userId}/{restaurantId}")
-    public void editOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId,@RequestBody CommentCreateRequest newComment) {
-        commentService.editOneCommentByRestaurantAndUserIds(userId,restaurantId,newComment);
+         commentService.deleteOneCommentByRestaurantAndUserIds(userId, restaurantId);
+         return ResponseEntity.ok("Comment deleted successfully");
     }
-    @GetMapping("/{userId}/{restaurantId}")
-    public CommentResponse getOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId) {
-        return commentService.getOneCommentByRestaurantAndUserIds(userId,restaurantId);
-    }
-
-    @DeleteMapping("/{userId}/{restaurantId}")
-    public void deleteOneCommentByRestaurantAndUserIds(@PathVariable Long userId,@PathVariable Long restaurantId) {
-        commentService.deleteOneCommentByRestaurantAndUserIds(userId,restaurantId);
-    }
-
 }

@@ -7,14 +7,9 @@ import com.restaurant.app.repos.CommentRepository;
 import com.restaurant.app.requests.CommentCreateRequest;
 import com.restaurant.app.requests.CommentUpdateRequest;
 import com.restaurant.app.response.CommentResponse;
-import com.restaurant.app.response.RatingResponse;
-import com.restaurant.app.response.RestaurantResponse;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,22 +26,49 @@ public class CommentService {
 
     public List<CommentResponse> getAllCommentsWithParam(Optional<Long> userId, Optional<Long> restaurantId) {
         List<Comment> comments;
-        if(userId.isPresent()) {
+        if (userId.isPresent() && restaurantId.isPresent()) {
+            Comment comment = commentRepository.findByUserIdAndRestaurantId(userId.get(), restaurantId.get());
+            if (comment == null) {
+                comments = new ArrayList<>();
+            } else {
+                comments = Collections.singletonList(comment);
+            }
+        } else if (userId.isPresent()) {
             comments = commentRepository.findByUserId(userId.get());
-        }else if(restaurantId.isPresent()) {
+        } else if (restaurantId.isPresent()) {
             comments = commentRepository.findByRestaurantId(restaurantId.get());
-        }else
+        } else {
             comments = commentRepository.findAll();
+        }
         return comments.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
     }
 
-    public Comment getOneCommentById(Long commentId) {
-        return commentRepository.findById(commentId).orElse(null);
+
+
+    public CommentResponse getOneCommentById(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        CommentResponse commentResponse = new CommentResponse(comment);
+        return commentResponse;
+    }
+
+    public CommentResponse getComment(Long userId,Long restaurantId) {
+        Comment comment = commentRepository.findByUserIdAndRestaurantId(userId,restaurantId);
+        if(comment!= null){
+            CommentResponse commentResponse = new CommentResponse(comment);
+            return commentResponse;
+        }else{
+            return null;
+        }
+
     }
 
     public Comment createOneComment(CommentCreateRequest request) {
         User user = userService.getOneUserById(request.getUserId());
         Restaurant restaurant = restaurantService.getOneRestaurantById(request.getRestaurantId());
+        Comment existingComment = commentRepository.findByUserIdAndRestaurantId(request.getUserId(), request.getRestaurantId());
+        if (existingComment != null) {
+            return null;
+        }
         if(user != null && restaurant != null) {
 
             Comment commentToSave = new Comment();
@@ -60,43 +82,20 @@ public class CommentService {
             return null;
     }
 
-    public Comment updateOneCommentById(Long commentId, CommentUpdateRequest request) {
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        if(comment.isPresent()) {
-            Comment commentToUpdate = comment.get();
-            commentToUpdate.setText(request.getText());
-            return commentRepository.save(commentToUpdate);
-        }else
-            return null;
-    }
-
-    public void deleteOneCommentById(Long commentId) {
-        commentRepository.deleteById(commentId);
-    }
-
     @Transactional
     public void deleteOneCommentByRestaurantAndUserIds(Long userId, Long restaurantId) {
         commentRepository.deleteByUserIdAndRestaurantId(userId, restaurantId);
 
     }
 
-    public Comment editOneCommentByRestaurantAndUserIds(Long userId, Long restaurantId, CommentCreateRequest newComment) {
+    public CommentResponse editOneCommentByRestaurantAndUserIds(Long userId, Long restaurantId, CommentUpdateRequest newComment) {
         Comment comment = commentRepository.findByUserIdAndRestaurantId(userId, restaurantId);
         Comment commentToUpdate = comment;
         commentToUpdate.setText(newComment.getText());
-        return commentRepository.save(commentToUpdate);
-    }
-
-    public CommentResponse getOneCommentByRestaurantAndUserIds(Long userId, Long restaurantId) {
-        Comment comment =  commentRepository.findByUserIdAndRestaurantId(userId, restaurantId);
-
-        CommentResponse commentResponse = new CommentResponse(comment);
-        commentResponse.setId(comment.getId());
-        commentResponse.setUserId(comment.getUser().getId());
-        commentResponse.setEmail(comment.getUser().getEmail());
-        commentResponse.setText(comment.getText());
-
+        commentRepository.save(commentToUpdate);
+        CommentResponse commentResponse = new CommentResponse(commentToUpdate);
         return commentResponse;
-
     }
+
+
 }

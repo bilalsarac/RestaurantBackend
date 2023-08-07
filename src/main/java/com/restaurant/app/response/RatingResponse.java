@@ -11,13 +11,4 @@ public class RatingResponse {
     private Double priceScore;
     private Double serviceScore;
 
-  /*  public RatingResponse(Rating entity){
-        this.tasteScore = entity.getTasteScore();
-        this.priceScore = entity.getPriceScore();
-        this.serviceScore = entity.getServiceScore();
-    }*/
-
-
-
-
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 public class CommentResponse {
     private Long id;
     private Long userId;
+    private Long restaurantId;
     private String text;
     private String email;
 
@@ -16,5 +17,6 @@ public class CommentResponse {
         this.userId = entity.getUser().getId();
         this.text = entity.getText();
         this.email = entity.getUser().getEmail();
+        this.restaurantId = entity.getRestaurant().getId();
     }
 }
