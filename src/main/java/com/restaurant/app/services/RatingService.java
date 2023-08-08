@@ -36,7 +36,6 @@ public class RatingService {
     public List<RatingResponse> getAllRatings(Optional<Long> userId, Optional<Long> restaurantId) {
         List<Rating> ratings;
         if(userId.isPresent() && restaurantId.isPresent()){
-            System.out.println("both");
             Rating rating = ratingRepository.findByUserIdAndRestaurantId(userId.get(),restaurantId.get());
             if (rating == null) {
                 ratings = new ArrayList<>();
@@ -45,14 +44,11 @@ public class RatingService {
             }
         }
         else if(userId.isPresent()) {
-            System.out.println("user");
             ratings = ratingRepository.findByUserId(userId.get());
         }else if(restaurantId.isPresent()){
-            System.out.println("resta");
             ratings = ratingRepository.findByRestaurantId(restaurantId.get());
         }
         else{
-            System.out.println("else");
             ratings = ratingRepository.findAll();
         }
 

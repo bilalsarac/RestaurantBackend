@@ -1,14 +1,17 @@
 package com.restaurant.app.services;
 
 
+import com.restaurant.app.entities.Comment;
 import com.restaurant.app.entities.Rating;
 import com.restaurant.app.entities.Restaurant;
 import com.restaurant.app.entities.User;
 import com.restaurant.app.repos.RestaurantRepository;
 import com.restaurant.app.requests.RestaurantCreateRequest;
 import com.restaurant.app.requests.RestaurantUpdateRequest;
+import com.restaurant.app.response.CommentResponse;
 import com.restaurant.app.response.RatingResponse;
 import com.restaurant.app.response.RestaurantResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +26,14 @@ public class RestaurantService {
     private RestaurantRepository restaurantRepository;
     private UserService userService;
     private RatingService ratingService;
+    private CommentService commentService;
 
 
-    public RestaurantService(RestaurantRepository restaurantRepository, UserService userService, RatingService ratingService) {
+    public RestaurantService(RestaurantRepository restaurantRepository, @Lazy CommentService commentService, UserService userService, RatingService ratingService) {
         this.restaurantRepository = restaurantRepository;
         this.userService = userService;
         this.ratingService = ratingService;
+        this.commentService = commentService;
     }
 
     public List<RestaurantResponse> getAllRestaurants() {
@@ -36,7 +41,8 @@ public class RestaurantService {
 
         return restaurants.stream().map(restaurant -> {
             List<RatingResponse> ratings = ratingService.getAllRatings (Optional.ofNullable(null), Optional.of(restaurant.getId()));
-            return new RestaurantResponse(restaurant, ratings);
+            List<CommentResponse> comments = commentService.getAllCommentsWithParam(Optional.ofNullable(null),Optional.of(restaurant.getId()));
+            return new RestaurantResponse(restaurant, ratings,comments);
         }).collect(Collectors.toList());
     }
 
@@ -48,7 +54,8 @@ public class RestaurantService {
     public RestaurantResponse getOneRestaurantForResponse(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
         List<RatingResponse> ratings = ratingService.getAllRatings(Optional.empty(), Optional.of(restaurantId));
-        RestaurantResponse restaurantResponse = new RestaurantResponse(restaurant, ratings);
+        List<CommentResponse> comments = commentService.getAllCommentsWithParam(Optional.ofNullable(null),Optional.of(restaurant.getId()));
+        RestaurantResponse restaurantResponse = new RestaurantResponse(restaurant, ratings,comments);
         return restaurantResponse;
     }
 
@@ -96,7 +103,8 @@ public class RestaurantService {
         List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
         return restaurants.stream().map(restaurant -> {
             List<RatingResponse> ratings = ratingService.getAllRatings(Optional.ofNullable(null), Optional.of(restaurant.getId()));
-            return new RestaurantResponse(restaurant,ratings);}).collect(Collectors.toList());
+            List<CommentResponse> comments = commentService.getAllCommentsWithParam(Optional.ofNullable(null),Optional.of(restaurant.getId()));
+            return new RestaurantResponse(restaurant,ratings,comments);}).collect(Collectors.toList());
 
     }
 

@@ -17,10 +17,10 @@ public class RestaurantResponse {
     private String photoUrl;
     private Date createDate;
     private List<RatingResponse> ratings;
+    private List<CommentResponse> comments;
 
 
-
-    public RestaurantResponse(Restaurant entity, List<RatingResponse> ratings){
+    public RestaurantResponse(Restaurant entity, List<RatingResponse> ratings, List<CommentResponse> comments){
         this.id = entity.getId();
         this.userId = entity.getUser().getId();
         this.name = entity.getName();
@@ -29,6 +29,7 @@ public class RestaurantResponse {
         this.photoUrl = entity.getPhotoUrl();
         this.createDate = entity.getCreateDate();
         this.ratings = ratings;
+        this.comments = comments;
 
 
     }
