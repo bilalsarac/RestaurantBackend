@@ -56,9 +56,9 @@ public class RatingRepositoryTest {
 
 
         Rating rating = new Rating();
-        rating.setTasteScore(5);
-        rating.setServiceScore(5);
-        rating.setPriceScore(5);
+        rating.setTasteScore(5d);
+        rating.setServiceScore(5d);
+        rating.setPriceScore(5d);
         rating.setRestaurant(restaurant);
         rating.setUser(user);
 
@@ -139,9 +139,9 @@ public class RatingRepositoryTest {
         restaurantRepository.save(restaurant);
 
         Rating rating = new Rating();
-        rating.setTasteScore(5);
-        rating.setServiceScore(5);
-        rating.setPriceScore(5);
+        rating.setTasteScore(5d);
+        rating.setServiceScore(5d);
+        rating.setPriceScore(5d);
         rating.setRestaurant(restaurant);
         rating.setUser(user);
         Rating savedRating = ratingRepository.save(rating);
