@@ -51,13 +51,13 @@ The app provides five base endpoints which are /auth, /restaurants, /comments, /
 #### Auth Controller
 This controller provides /login and /register (POST) request options. Since all users should be able to log in and register no authorization is required.
 #### Comment Controller
-This controller provides /comments(GET, POST) endpoint to receive all comments and post a comment. Since one comment can belong to the user and restaurant, /comments/userId/restaurantId(POST, PUT, DELETE) endpoint is used for this purpose.
+This controller provides /comments(GET, POST) endpoint to receive all comments and post a comment. Get request can be used with parameters such as restaurantId and userId or both. Since one comment can belong to the user and restaurant, /comments/?userId=1&restaurantId=1(PUT, DELETE) endpoint is used for this purpose.
 #### Rating Controller
-This controller provides the same logic with comments. Since one rating can belong to the user and restaurant /ratings/userId/restaurantId(POST, PUT, DELETE) endpoint is used for this purpose, but this time /restaurantratings/restaurantId endpoint is used to receive the ratings for a restaurant.
+This controller provides the same logic with comments. Since one rating can belong to the user and the restaurant /ratings(GET, POST) endpoint is used for this purpose. Get request can be used with parameters such as restaurantId and userId or both. The endpoint /averageRatings/?restaurantId=1 is used to receive the ratings for a restaurant. Since one rating can belong to the user and a restaurant, /ratings/?userId=1&restaurantId=1(PUT, DELETE) endpoint is used for this purpose.
 #### Restaurant Controller
-This controller provides /restaurants(GET) endpoint to get all restaurants,/restaurants/userId/restaurants(GET) endpoint to get all restaurants defined by the user, /restaurants/restaurantId(PUT, DELETE, GET) to update, delete and get one restaurant. Preauthorize annotation is used to distribute the authorities such as only seniors can edit and create restaurants.
+This controller provides /restaurants(GET) endpoint to get all restaurants, as well as their comments and ratings,/restaurants/userId/restaurants(GET) endpoint to get all restaurants defined by the user, /restaurants/restaurantId(PUT, DELETE, GET) to update, delete and get one restaurant. The endpoint /restaurants/search with parameter keyword is used for searching id, name, address or category features of a restaurant. Preauthorize annotation is used to distribute the authorities such as only seniors can edit and create restaurants.
 #### User Controller
-This controller provides /users(GET) endpoint to receive all the users, /users/userId(GET,PUT,POST,DELETE) endpoint to get one user, update the user, add the user and delete the user.
+This controller provides /users(GET) endpoint to receive all the users, /users/userId(GET, PUT, POST, DELETE) endpoint to get one user, update the user, add the user and delete the user.
 
 ### Repository
 In this project, the JPA repository, which contains built-in elementary queries, was used to speed up the development process. In addition, native queries were used for extra features.
@@ -69,10 +69,10 @@ The service layer is the layer that covers all the business logic of the applica
 Since there is data that should not be leaked in the API returns of users such as passwords, response objects were used in this project and entity objects were mapped to them, since we do not need to change the id fields when updating the data, request classes are used.
 
 ### Test
-There are basic unit tests for repositories and services.
+There are basic unit tests for repositories and services. Postman is used for API request and response control.
 
 ### Authentication
-JWT token-based authentication was used in this project.
+JWT token-based authentication was used in this project for more security.
 
 ## ER Diagram
 Users can have many comments, as well as restaurants can have many comments, but one comment only can be assigned to a restaurant and user. With the same logic, users can have many ratings, as well as restaurants, can have many ratings, but one rating only can be assigned to the restaurant and user.
