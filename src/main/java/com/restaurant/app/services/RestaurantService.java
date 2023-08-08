@@ -109,4 +109,7 @@ public class RestaurantService {
     }
 
 
+    public List<Restaurant> searchRestaurants(String keyword) {
+       return restaurantRepository.findByKeyword(keyword);
+    }
 }
